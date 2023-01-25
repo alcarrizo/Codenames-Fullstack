@@ -1,0 +1,38 @@
+things to do
+
+-track number of cards left -------- done
+
+-randomize starting team ---------- done
+
+-win logic ------ done
+--death card
+--find all cards 
+
+-give clue logic
+-- pick how many cards the clue is associated With ---- done
+-- update the clue Log --- done
+-- make the give clue section hide afterwards ----done
+-- only the spymaster with the turn can give clue ---- done
+-- operatives can only click after the clue has been given
+
+-implement turns------ done(just uncomment no clicking)
+-- make it so the opposite team can't click during your turn 
+
+-implement who can't click cards ------ done(just uncomment)
+--spymasters
+--players who haven't joined a team
+-- team that doesn't have the turn
+
+-implement who can't end turn ------done
+-- spymaster
+-- team that doesn't have the turn
+-- players who haven't joined a team
+
+
+-implement that operatives can only click up to the clue number + 1
+-- get clue num ------- done
+-- if user clicks clue +1 card, the turn switches
+
+Maybe: 
+-change the h1 to show who won instead of have a win screen
+-----allows viewing cards at game end

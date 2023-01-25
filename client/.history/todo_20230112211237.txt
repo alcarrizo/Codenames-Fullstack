@@ -1,0 +1,30 @@
+things to do
+
+-track number of cards left -------- done
+
+-randomize starting team ---------- done
+
+-win logic ------ done
+--death card ------ done
+--find all cards ------ done
+
+-give clue logic
+-- pick how many cards the clue is associated With
+-- update the clue Log
+-- make the give clue section hide afterwards
+-- only the spymaster with the turn can give clue
+
+-implement turns------ done(just uncomment no clicking)
+-- make it so the opposite team can't click during your turn 
+
+-implement who can't click cards ------ done(just uncomment)
+--spymasters
+--players who haven't joined a team
+-- team that doesn't have the turn
+
+-implement who can't end turn ------done
+-- spymaster
+-- team that doesn't have the turn
+-- players who haven't joined a team
+
+

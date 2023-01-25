@@ -1,0 +1,26 @@
+things to do
+
+-track number of cards left
+
+-randomize starting team
+
+-win logic
+
+--death card
+--find all cards
+
+-give clue logic
+
+-implement turns
+
+-implement who can't click cards
+--spymasters
+--players who haven't joined a team
+-- team that doesn't have the turn
+
+-implement who can't end turn
+-- spymaster
+-- team that doesn't have the turn
+-- players who haven't joined a team
+
+

@@ -1,0 +1,229 @@
+h1 {
+    margin-bottom: 3px;
+}
+
+body {
+    background-color: #cfcfaa;
+}
+
+body.red {
+    background-color: #b44c2b;
+}
+
+body.blue {
+    background-color: #4799b7;
+}
+
+.wrapper {
+    position: relative;
+    border: 0.05rem solid black;
+    width: 70%;
+    height: 80vh;
+    display: flex;
+    background: none;
+    margin: 0 auto;
+
+}
+
+.gameBoard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    width: 35rem;
+    height: 100%;
+    /*   width: 500px;
+    height: 500px; */
+    /*width: 15rem;
+    height: 15rem;
+    */
+    border: 0.05rem solid black;
+    margin: auto;
+}
+
+
+
+.card {
+    /* background-color: royalblue; */
+    background-color: beige;
+    box-sizing: border-box;
+    /*width: 75px;
+    height: 65px;
+  */
+    /*   width: 5.5rem;
+    height: 5rem; */
+    width: 18%;
+    height: 15%;
+    margin: auto 2px;
+    border: 2px black solid;
+    font-size: .9vw;
+    padding-top: 17px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: none;
+}
+
+.card.blue {
+    background-color: royalblue;
+
+}
+
+.card.red {
+    background-color: #ff6000;
+}
+
+.card.black {
+    background-color: black;
+    color: white;
+
+}
+
+.card.beige {
+    background-color: #b9b979;
+}
+
+.card.blue,
+.card.red,
+.card.black,
+.card.beige {
+    transition: background-color 1s;
+}
+
+.card.blue.picked,
+.card.red.picked,
+.card.black.picked,
+.card.beige.picked {
+    transition: opacity 1s;
+    opacity: 50%;
+}
+
+
+.redSide,
+.blueSide {
+    color: white;
+    height: 100%;
+    width: 13rem;
+    font-size: 15px;
+    font-weight: bold;
+    padding-left: 5px;
+    padding-bottom: 10px;
+    margin: 0 auto;
+}
+
+.blueTeam,
+.redTeam {
+    height: 50%;
+    margin-top: 10px;
+    padding-left: 10%;
+
+    box-sizing: border-box;
+}
+
+.redTeam {
+    background-color: red;
+
+}
+
+.blueTeam {
+    background-color: royalblue;
+
+}
+
+.blueSide {
+    height: 100%;
+}
+
+.join-button {
+    display: block;
+    width: 90%;
+    height: 22%;
+    margin: -10px auto 0;
+    background-color: orange;
+    border: black solid 3px;
+}
+
+.join-button.hide {
+    display: none;
+}
+
+.menuBtn {
+    display: block;
+    width: 90%;
+    height: 40px;
+    margin: 0 auto;
+    background-color: orange;
+    border: black solid 3px;
+    margin-bottom: 10px;
+
+
+}
+
+.menuBtn.hide {
+    display: none;
+}
+
+.menu {
+    display: block;
+    width: 100%;
+    margin-top: 50%;
+}
+
+.clue-log {
+    color: black;
+    width: 100%;
+    height: 40%;
+    margin: 10px 0 5px;
+    padding-left: 10px;
+    background-color: white;
+    box-sizing: border-box;
+    border: black solid 3px;
+    overflow-y: auto;
+    line-height: 1.5;
+}
+
+.rangeDiv {
+    display: inline-block;
+    text-align: center;
+
+}
+
+.rangeDiv h3 {
+    margin: 0;
+    display: inline-block;
+}
+
+.clue-area {
+    margin: 10px auto 0;
+    width: 400px;
+    height: 50px;
+    margin-bottom: 15px;
+}
+
+.clue-area.hide {
+    display: none;
+}
+
+.clue-submit {
+    display: block;
+    margin: 10px auto 0;
+}
+
+.win-screen {
+    box-sizing: border-box;
+    margin: 10px auto;
+    width: 50%;
+    height: 70px;
+    background-color: orange;
+    top: 35%;
+    left: 35%;
+    text-align: center;
+    font-size: 35px;
+    line-height: 170px;
+    font-weight: 800;
+    border: black solid 3px;
+
+}
+
+.win-screen.hide {
+    display: none;
+}

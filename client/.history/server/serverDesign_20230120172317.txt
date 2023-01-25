@@ -1,0 +1,21 @@
+game object
+- array of players
+- array of cards
+- game id
+- red cards
+- blue cards
+- black cards
+
+functions
+connect to game function
+- returns players and cards (before joining acts as a spectator)
+
+Join team function
+- A player joins a team
+
+handle disconnects
+- removes player from the team
+
+reveal card
+- update card to be revealed
+
