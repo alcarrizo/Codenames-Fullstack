@@ -130,8 +130,10 @@ io.on('connection', socket => {
     Game.players.push(player)
 
     socket.on('connect-player', player => {
+        console.log(player)
         var newPlayer = { ...player, id: socket.id }
         Game.players = Game.players.map(p => p.id === socket.id ? newPlayer : p)
+        console.log(Game.players)
         socket.emit('connected', { game: Game, newPlayer: newPlayer })
         console.log(`${newPlayer.name} just connected`)
     })
@@ -146,13 +148,15 @@ io.on('connection', socket => {
 
     socket.on('reveal-card', (id) => {
         let player = Game.players.find(p => p.id === socket.id)
-
+        console.log(player)
+        console.log(player.team === Game.whoseTurn, player.role === 'operative', Game.clueGiven)
         if (player.team === Game.whoseTurn
             && player.role === 'operative'
             && Game.clueGiven) {
 
             Game.cards[id].clicked = true
             Game.cardsPicked += 1
+            console.log(Game.cardsPicked, Game.pickLimit)
 
             if (Game.whoseTurn !== Game.cards[id].team
                 || Game.cardsPicked === Game.pickLimit) {
@@ -178,6 +182,7 @@ io.on('connection', socket => {
     })
     // On Join
     socket.on('join-team', (player) => {
+        console.log(Game.players)
         Game.players = Game.players.map(p => p.id === socket.id ? { ...player, id: socket.id } : p)
         io.sockets.emit('player-joined', Game.players)
     })

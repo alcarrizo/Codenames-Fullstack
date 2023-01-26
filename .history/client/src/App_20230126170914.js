@@ -300,8 +300,8 @@ const App = () => {
   if (player.name === null) {
     return (
       <div className="App">
+        <h1> Codenames</h1>
         <div className='name-area'>
-          <h1 className='name-title'> Codenames</h1>
           <input className='name-text' id='name-text' type="text" />
           <Btn onClick={() => { connectToGame() }} className="menuBtn" id="name-submit" name="Enter Name" />
         </div>

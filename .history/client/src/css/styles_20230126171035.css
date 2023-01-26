@@ -242,13 +242,9 @@ body.blue {
     display: block;
     box-sizing: border-box;
     margin: 20% auto 0;
-    padding-top: -10px;
+    padding-top: 20px;
     width: 400px;
     height: 200px;
     background-color: #4799b7;
     border: black solid 4px;
-}
-
-.name-title {
-    margin: 0 auto 20px;
 }
