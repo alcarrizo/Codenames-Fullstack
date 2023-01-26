@@ -165,9 +165,11 @@ io.on('connection', socket => {
 
     // Handle Diconnect
     socket.on('disconnect', () => {
+        console.log(Game.players)
         console.log(`Player ${socket.id} disconnected`)
         Game.players = Game.players.filter(p => p.id !== socket.id)
         //Tell everyone what player numbe just disconnected
+        console.log(Game.players)
         socket.broadcast.emit('player-joined', Game.players)
     })
     // On Join

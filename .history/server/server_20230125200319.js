@@ -119,14 +119,6 @@ const startGame = () => {
 
 
 io.on('connection', socket => {
-    let player = {
-        name: 'Joker',
-        id: socket.id,
-        team: null,
-        role: null,
-        joined: false
-    }
-    Game.players.push(player)
     socket.emit('connected', Game)
     console.log(`${socket.id} user just connected`)
     // start game
@@ -140,6 +132,8 @@ io.on('connection', socket => {
     socket.on('reveal-card', (id) => {
         let player = Game.players.find(p => p.id === socket.id)
         console.log(player)
+        console.log(player.team, Game.whoseTurn)
+        console.log(player.role, 'operative')
         console.log(player.team === Game.whoseTurn, player.role === 'operative', Game.clueGiven)
         if (player.team === Game.whoseTurn
             && player.role === 'operative'
@@ -172,8 +166,8 @@ io.on('connection', socket => {
     })
     // On Join
     socket.on('join-team', (player) => {
-        console.log(Game.players)
-        Game.players = Game.players.map(p => p.id === socket.id ? { ...player, id: socket.id } : p)
+        player.id = socket.id
+        Game.players.push(player)
         io.sockets.emit('player-joined', Game.players)
     })
 
@@ -190,9 +184,7 @@ io.on('connection', socket => {
         Game.blackCards = []
         Game.redCards = []
         Game.blueCards = []
-        Game.players = Game.players = Game.players.map(p => {
-            return { ...p, role: null, team: null }
-        })
+        Game.players = []
         Game.whoseTurn = null
         Game.clueLog = []
         io.sockets.emit('game-restarted', Game)

@@ -78,10 +78,10 @@ const App = () => {
 
   // tells the server to start the game and
   // sends back the game information
-  const startGame = () => {
+  const startGametwo = () => {
     socket.emit('start-game')
   }
-  const restart = () => {
+  const restartTwo = () => {
     socket.emit('restart-game')
   }
 
@@ -89,7 +89,7 @@ const App = () => {
   //they have the turn, and a clue hasn't been given
   var clueClass = player.team === turn && player.role === 'spymaster' && !clueGiven ? 'clue-area' : 'clue-area hide'
   // revealing the end turn button if it's your turn and your role isn't spymaster
-  var endClass = clueGiven === true && gameStart === true && player.team === turn && player.role !== 'spymaster' ? 'menuBtn' : 'menuBtn hide'
+  var endClass = gameStart === true && player.team === turn && player.role !== 'spymaster' ? 'menuBtn' : 'menuBtn hide'
 
   // reveals/hides the join team buttons depending on whether the player has joined or not
   var joinClass = player.joined ? 'join-button hide' : 'join-button'
@@ -145,15 +145,12 @@ const App = () => {
     document.getElementById("red-spymaster-players").innerHTML = " "
 
     players.forEach(p => {
-      if (p.role !== null) {
-        document.getElementById(p.team + "-" + p.role + "-players").innerHTML += p.name + " "
-      }
+      document.getElementById(p.team + "-" + p.role + "-players").innerHTML += p.name + " "
     })
   }
 
   //checks if someone has won whenever a card is picked
   useEffect(() => {
-
     if (!gameStart) {
       return
     }
@@ -265,15 +262,32 @@ const App = () => {
 
   }, [])
 
-  const changeTurn = () => {
+  const changeTurnTwo = () => {
     socket.emit('change-turn')
   }
 
-  const giveClue = () => {
+  const giveClueTwo = () => {
     let clue = document.getElementById('clue-text').value
     let clueNum = document.getElementById('clueRange').value
 
     socket.emit('give-clue', { word: clue, num: clueNum })
+    document.getElementById("clueRange").value = '0'
+    document.getElementById('clue-text').value = ''
+    document.getElementById("rangeNumber").innerHTML = "0"
+  }
+
+  const giveClue = () => {
+
+    let clue = document.getElementById('clue-text').value
+    let clueNum = document.getElementById('clueRange').value
+    let limit = clueNum === '10' || clueNum === '0' ? 10 : Number(clueNum)
+    clueNum = clueNum === '10' ? "&infin;" : clueNum
+
+    document.getElementById('clue-log').innerHTML += turn + ': ' + clue + ' ' + clueNum + '<br>'
+    setClueGiven(true)
+    setPickLimit(limit)
+
+    //resetting the clue fields after they are used
     document.getElementById("clueRange").value = '0'
     document.getElementById('clue-text').value = ''
     document.getElementById("rangeNumber").innerHTML = "0"
@@ -319,7 +333,7 @@ const App = () => {
         <div className={"blueSide"}>
           <PlayerInfo numCards={cards.filter(c => c.team === 'blue' && !c.clicked).length} joinClass={joinClass} joinTeam={joinTeam} className={'blue'} />
           <div id='clue-log' className='clue-log'></div>
-          <Btn onClick={() => changeTurn()} className={endClass} id="endTurn" name="End Turn" />
+          <Btn onClick={() => changeTurnTwo()} className={endClass} id="endTurn" name="End Turn" />
         </div>
 
 
@@ -331,13 +345,13 @@ const App = () => {
           <input onChange={() => { updateClueNum() }} className="clue-range" id='clueRange' type="range" autoComplete='off' min="0" max="10" defaultValue="0" />
           <h3 className="range-number" id="rangeNumber">0</h3>
         </div>
-        <Btn onClick={() => { giveClue() }} className="clue-submit" id="clue-submit" name="Give Clue" />
+        <Btn onClick={() => { giveClueTwo() }} className="clue-submit" id="clue-submit" name="Give Clue" />
       </div>
 
-      {/* <button onClick={() => startGame()}> test start </button>
-      <button onClick={() => restart()}> test restart </button>
-      <button onClick={() => giveClue()}> test give clue </button>
-      <button onClick={() => changeTurn()}> test change Turn </button> */}
+      <button onClick={() => startGametwo()}> test start </button>
+      <button onClick={() => restartTwo()}> test restart </button>
+      <button onClick={() => giveClueTwo()}> test give clue </button>
+      <button onClick={() => changeTurnTwo()}> test change Turn </button>
     </div>
   );
 }

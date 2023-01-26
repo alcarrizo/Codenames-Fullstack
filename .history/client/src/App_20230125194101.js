@@ -89,7 +89,7 @@ const App = () => {
   //they have the turn, and a clue hasn't been given
   var clueClass = player.team === turn && player.role === 'spymaster' && !clueGiven ? 'clue-area' : 'clue-area hide'
   // revealing the end turn button if it's your turn and your role isn't spymaster
-  var endClass = clueGiven === true && gameStart === true && player.team === turn && player.role !== 'spymaster' ? 'menuBtn' : 'menuBtn hide'
+  var endClass = gameStart === true && player.team === turn && player.role !== 'spymaster' ? 'menuBtn' : 'menuBtn hide'
 
   // reveals/hides the join team buttons depending on whether the player has joined or not
   var joinClass = player.joined ? 'join-button hide' : 'join-button'
@@ -145,15 +145,12 @@ const App = () => {
     document.getElementById("red-spymaster-players").innerHTML = " "
 
     players.forEach(p => {
-      if (p.role !== null) {
-        document.getElementById(p.team + "-" + p.role + "-players").innerHTML += p.name + " "
-      }
+      document.getElementById(p.team + "-" + p.role + "-players").innerHTML += p.name + " "
     })
   }
 
   //checks if someone has won whenever a card is picked
   useEffect(() => {
-
     if (!gameStart) {
       return
     }

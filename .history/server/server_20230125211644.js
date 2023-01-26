@@ -127,6 +127,8 @@ io.on('connection', socket => {
         joined: false
     }
     Game.players.push(player)
+    console.log(Game.players)
+    console.log('test')
     socket.emit('connected', Game)
     console.log(`${socket.id} user just connected`)
     // start game

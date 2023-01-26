@@ -145,6 +145,8 @@ const App = () => {
     document.getElementById("red-spymaster-players").innerHTML = " "
 
     players.forEach(p => {
+      console.log(p.role, p.role != null)
+      console.log('' !== null)
       if (p.role !== null) {
         document.getElementById(p.team + "-" + p.role + "-players").innerHTML += p.name + " "
       }
@@ -153,7 +155,7 @@ const App = () => {
 
   //checks if someone has won whenever a card is picked
   useEffect(() => {
-
+    console.log(gameStart)
     if (!gameStart) {
       return
     }

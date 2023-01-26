@@ -127,6 +127,8 @@ io.on('connection', socket => {
         joined: false
     }
     Game.players.push(player)
+    console.log(Game.players)
+    console.log('test')
     socket.emit('connected', Game)
     console.log(`${socket.id} user just connected`)
     // start game
@@ -172,8 +174,13 @@ io.on('connection', socket => {
     })
     // On Join
     socket.on('join-team', (player) => {
+        // player.id = socket.id
+        // Game.players.push(player)
+        console.log(player)
+        // console.log(Game.players)
+
+        Game.players.map(p => p.id === socket.id ? { ...player, id: socket.id } : p)
         console.log(Game.players)
-        Game.players = Game.players.map(p => p.id === socket.id ? { ...player, id: socket.id } : p)
         io.sockets.emit('player-joined', Game.players)
     })
 
@@ -190,9 +197,7 @@ io.on('connection', socket => {
         Game.blackCards = []
         Game.redCards = []
         Game.blueCards = []
-        Game.players = Game.players = Game.players.map(p => {
-            return { ...p, role: null, team: null }
-        })
+        Game.players = []
         Game.whoseTurn = null
         Game.clueLog = []
         io.sockets.emit('game-restarted', Game)

@@ -153,7 +153,7 @@ const App = () => {
 
   //checks if someone has won whenever a card is picked
   useEffect(() => {
-
+    console.log(gameStart)
     if (!gameStart) {
       return
     }

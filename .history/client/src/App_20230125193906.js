@@ -78,10 +78,10 @@ const App = () => {
 
   // tells the server to start the game and
   // sends back the game information
-  const startGame = () => {
+  const startGametwo = () => {
     socket.emit('start-game')
   }
-  const restart = () => {
+  const restartTwo = () => {
     socket.emit('restart-game')
   }
 
@@ -89,7 +89,7 @@ const App = () => {
   //they have the turn, and a clue hasn't been given
   var clueClass = player.team === turn && player.role === 'spymaster' && !clueGiven ? 'clue-area' : 'clue-area hide'
   // revealing the end turn button if it's your turn and your role isn't spymaster
-  var endClass = clueGiven === true && gameStart === true && player.team === turn && player.role !== 'spymaster' ? 'menuBtn' : 'menuBtn hide'
+  var endClass = gameStart === true && player.team === turn && player.role !== 'spymaster' ? 'menuBtn' : 'menuBtn hide'
 
   // reveals/hides the join team buttons depending on whether the player has joined or not
   var joinClass = player.joined ? 'join-button hide' : 'join-button'
@@ -145,15 +145,12 @@ const App = () => {
     document.getElementById("red-spymaster-players").innerHTML = " "
 
     players.forEach(p => {
-      if (p.role !== null) {
-        document.getElementById(p.team + "-" + p.role + "-players").innerHTML += p.name + " "
-      }
+      document.getElementById(p.team + "-" + p.role + "-players").innerHTML += p.name + " "
     })
   }
 
   //checks if someone has won whenever a card is picked
   useEffect(() => {
-
     if (!gameStart) {
       return
     }
@@ -265,7 +262,7 @@ const App = () => {
 
   }, [])
 
-  const changeTurn = () => {
+  const changeTurnTwo = () => {
     socket.emit('change-turn')
   }
 
@@ -319,7 +316,7 @@ const App = () => {
         <div className={"blueSide"}>
           <PlayerInfo numCards={cards.filter(c => c.team === 'blue' && !c.clicked).length} joinClass={joinClass} joinTeam={joinTeam} className={'blue'} />
           <div id='clue-log' className='clue-log'></div>
-          <Btn onClick={() => changeTurn()} className={endClass} id="endTurn" name="End Turn" />
+          <Btn onClick={() => changeTurnTwo()} className={endClass} id="endTurn" name="End Turn" />
         </div>
 
 
@@ -334,10 +331,10 @@ const App = () => {
         <Btn onClick={() => { giveClue() }} className="clue-submit" id="clue-submit" name="Give Clue" />
       </div>
 
-      {/* <button onClick={() => startGame()}> test start </button>
-      <button onClick={() => restart()}> test restart </button>
+      <button onClick={() => startGametwo()}> test start </button>
+      <button onClick={() => restartTwo()}> test restart </button>
       <button onClick={() => giveClue()}> test give clue </button>
-      <button onClick={() => changeTurn()}> test change Turn </button> */}
+      <button onClick={() => changeTurnTwo()}> test change Turn </button>
     </div>
   );
 }
