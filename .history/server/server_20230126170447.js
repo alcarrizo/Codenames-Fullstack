@@ -121,7 +121,6 @@ const startGame = () => {
 io.on('connection', socket => {
 
     socket.on('connect-player', player => {
-        console.log(player)
         var newPlayer = { ...player, id: socket.id }
         Game.players.push(newPlayer)
         console.log(Game.players)

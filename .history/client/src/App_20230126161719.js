@@ -204,7 +204,7 @@ const App = () => {
 
     // when a player connects, they get the game
     // information (i.e. cards, players)
-    socket.on('connected', ({ game, newPlayer }) => {
+    socket.on('connected', game => {
       setCards(game.cards)
       setGameStart(game.gameStart)
       setTurn(game.whoseTurn)
@@ -212,7 +212,6 @@ const App = () => {
       game.clueLog.forEach(line => {
         document.getElementById('clue-log').innerHTML += line + '<br>'
       });
-      setPlayer(newPlayer)
 
     })
 
@@ -287,26 +286,6 @@ const App = () => {
     }
   }
 
-  const connectToGame = () => {
-    var name = document.getElementById('name-text').value
-    var newPlayer = { ...player, name: name }
-
-    socket.emit('connect-player', newPlayer)
-    setPlayer(newPlayer)
-
-  }
-
-
-  if (player.name === null) {
-    return (
-      <div className="App">
-        <div className='name-area'>
-          <input className='name-text' id='name-text' type="text" />
-          <Btn onClick={() => { connectToGame() }} className="menuBtn" id="name-submit" name="Enter Name" />
-        </div>
-      </div>
-    )
-  }
   return (
     <div className="App">
       <div className='win-screen hide' id='win-screen'></div>

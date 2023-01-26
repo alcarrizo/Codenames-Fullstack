@@ -228,23 +228,16 @@ body.blue {
     display: none;
 }
 
-.name-text {
-    display: block;
-    margin: 0 auto 20px;
-    height: 40px;
-    width: 300px;
-    font-size: large;
-    text-align: center;
+.name-text {}
 
+.name-submit {
+    display: block;
+    margin: 0 auto;
 }
 
 .name-area {
     display: block;
-    box-sizing: border-box;
-    margin: 20% auto 0;
-    padding-top: 55px;
-    width: 400px;
-    height: 200px;
-    background-color: #4799b7;
-    border: black solid 4px;
+    margin: 50px auto 0;
+    width: 200px;
+    height: 100px;
 }

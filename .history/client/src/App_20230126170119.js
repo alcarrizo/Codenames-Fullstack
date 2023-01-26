@@ -204,161 +204,158 @@ const App = () => {
 
     // when a player connects, they get the game
     // information (i.e. cards, players)
-    socket.on('connected', ({ game, newPlayer }) => {
-      setCards(game.cards)
-      setGameStart(game.gameStart)
-      setTurn(game.whoseTurn)
-      updateTeams(game.players)
-      game.clueLog.forEach(line => {
-        document.getElementById('clue-log').innerHTML += line + '<br>'
-      });
-      setPlayer(newPlayer)
+    socket.on('connected', { game, newPlayer } => {
+  setCards(game.cards)
+  setGameStart(game.gameStart)
+  setTurn(game.whoseTurn)
+  updateTeams(game.players)
+  game.clueLog.forEach(line => {
+    document.getElementById('clue-log').innerHTML += line + '<br>'
+  });
 
-    })
+})
 
-    // update teams when a player joined a team
-    socket.on('player-joined', players => {
-      updateTeams(players)
-    })
+// update teams when a player joined a team
+socket.on('player-joined', players => {
+  updateTeams(players)
+})
 
-    socket.on('game-restarted', game => {
-      setTurn(game.whoseTurn)
-      setCards(game.cards)
-      updateTeams(game.players)
-      setGameStart(game.gameStart)
-      setPlayer({ ...player, team: null, role: null, joined: false })
-      //bringing back the start game button
-      document.getElementById('startBtn').className = 'menuBtn'
+socket.on('game-restarted', game => {
+  setTurn(game.whoseTurn)
+  setCards(game.cards)
+  updateTeams(game.players)
+  setGameStart(game.gameStart)
+  setPlayer({ ...player, team: null, role: null, joined: false })
+  //bringing back the start game button
+  document.getElementById('startBtn').className = 'menuBtn'
 
-      //resetting the winScreen
-      document.getElementById('win-screen').className = 'win-screen hide'
+  //resetting the winScreen
+  document.getElementById('win-screen').className = 'win-screen hide'
 
-      //resetting the clue variables
-      setClueGiven(false)
-      setCardsPicked(0)
-      setPickLimit(0)
-      // resetting the clue log
-      document.getElementById('clue-log').innerHTML = ''
+  //resetting the clue variables
+  setClueGiven(false)
+  setCardsPicked(0)
+  setPickLimit(0)
+  // resetting the clue log
+  document.getElementById('clue-log').innerHTML = ''
 
-    })
+})
 
-    socket.on('clue-given', log => {
-      setClueGiven(true)
-      //setPickLimit(clue.limit)
-      document.getElementById('clue-log').innerHTML = ''
-      console.log(turn)
-      log.forEach(line => {
-        document.getElementById('clue-log').innerHTML += line + '<br>'
-      });
+socket.on('clue-given', log => {
+  setClueGiven(true)
+  //setPickLimit(clue.limit)
+  document.getElementById('clue-log').innerHTML = ''
+  console.log(turn)
+  log.forEach(line => {
+    document.getElementById('clue-log').innerHTML += line + '<br>'
+  });
 
-      //      document.getElementById('clue-log').innerHTML += turn + ': ' + clue.word + ' ' + clue.num + '<br>'
+  //      document.getElementById('clue-log').innerHTML += turn + ': ' + clue.word + ' ' + clue.num + '<br>'
 
 
-    })
+})
 
-    socket.on('turn-change', game => {
-      setTurn(game.whoseTurn)
-      setClueGiven(game.clueGiven)
-      setCardsPicked(0)
-    })
+socket.on('turn-change', game => {
+  setTurn(game.whoseTurn)
+  setClueGiven(game.clueGiven)
+  setCardsPicked(0)
+})
 
   }, [])
 
-  const changeTurn = () => {
-    socket.emit('change-turn')
+const changeTurn = () => {
+  socket.emit('change-turn')
+}
+
+const giveClue = () => {
+  let clue = document.getElementById('clue-text').value
+  let clueNum = document.getElementById('clueRange').value
+
+  socket.emit('give-clue', { word: clue, num: clueNum })
+  document.getElementById("clueRange").value = '0'
+  document.getElementById('clue-text').value = ''
+  document.getElementById("rangeNumber").innerHTML = "0"
+}
+
+const updateClueNum = () => {
+  if (document.getElementById("clueRange").value === '10') {
+    document.getElementById("rangeNumber").innerHTML = "&infin;"
   }
-
-  const giveClue = () => {
-    let clue = document.getElementById('clue-text').value
-    let clueNum = document.getElementById('clueRange').value
-
-    socket.emit('give-clue', { word: clue, num: clueNum })
-    document.getElementById("clueRange").value = '0'
-    document.getElementById('clue-text').value = ''
-    document.getElementById("rangeNumber").innerHTML = "0"
+  else {
+    document.getElementById("rangeNumber").innerHTML = document.getElementById("clueRange").value
   }
+}
 
-  const updateClueNum = () => {
-    if (document.getElementById("clueRange").value === '10') {
-      document.getElementById("rangeNumber").innerHTML = "&infin;"
-    }
-    else {
-      document.getElementById("rangeNumber").innerHTML = document.getElementById("clueRange").value
-    }
-  }
+const connectToGame = () => {
+  var name = document.getElementById('name-text').value
+  var newPlayer = { ...player, name: name }
 
-  const connectToGame = () => {
-    var name = document.getElementById('name-text').value
-    var newPlayer = { ...player, name: name }
-
-    socket.emit('connect-player', newPlayer)
-    setPlayer(newPlayer)
-
-  }
+  setPlayer(newPlayer)
+}
 
 
-  if (player.name === null) {
-    return (
-      <div className="App">
-        <div className='name-area'>
-          <input className='name-text' id='name-text' type="text" />
-          <Btn onClick={() => { connectToGame() }} className="menuBtn" id="name-submit" name="Enter Name" />
-        </div>
-      </div>
-    )
-  }
+if (player.name === null) {
   return (
     <div className="App">
-      <div className='win-screen hide' id='win-screen'></div>
+      <div className='name-area'>
+        <input className='name-text' id='name-text' type="text" />
+        <Btn onClick={() => { connectToGame() }} className="menuBtn" id="name-submit" name="Enter Name" />
+      </div>
+    </div>
+  )
+}
+return (
+  <div className="App">
+    <div className='win-screen hide' id='win-screen'></div>
 
-      {/* <button onClick={() => { giveClue('test') }}>test</button> */}
+    {/* <button onClick={() => { giveClue('test') }}>test</button> */}
 
-      <div className='wrapper'>
-        <div className={"redSide"}>
-          <PlayerInfo numCards={cards.filter(c => c.team === 'red' && !c.clicked).length} joinClass={joinClass} joinTeam={joinTeam} className={'red'} />
-          <div className='menu'>
-            <Btn className='menuBtn' onClick={() => startGame()} id="startBtn" name="Start Game" />
-            <Btn className='menuBtn' onClick={() => restart()} id="resetBtn" name="Restart Game" />
-          </div>
+    <div className='wrapper'>
+      <div className={"redSide"}>
+        <PlayerInfo numCards={cards.filter(c => c.team === 'red' && !c.clicked).length} joinClass={joinClass} joinTeam={joinTeam} className={'red'} />
+        <div className='menu'>
+          <Btn className='menuBtn' onClick={() => startGame()} id="startBtn" name="Start Game" />
+          <Btn className='menuBtn' onClick={() => restart()} id="resetBtn" name="Restart Game" />
         </div>
+      </div>
 
-        <div className='gameBoard'>
-          {
-            cards.map((card) =>
-              <Card
-                player={player}
-                key={card.id}
-                card={card}
-                revealCard={revealCard} />
-            )
-          }
-
-        </div>
-
-        <div className={"blueSide"}>
-          <PlayerInfo numCards={cards.filter(c => c.team === 'blue' && !c.clicked).length} joinClass={joinClass} joinTeam={joinTeam} className={'blue'} />
-          <div id='clue-log' className='clue-log'></div>
-          <Btn onClick={() => changeTurn()} className={endClass} id="endTurn" name="End Turn" />
-        </div>
-
+      <div className='gameBoard'>
+        {
+          cards.map((card) =>
+            <Card
+              player={player}
+              key={card.id}
+              card={card}
+              revealCard={revealCard} />
+          )
+        }
 
       </div>
 
-      <div className={clueClass} id='clue-area'>
-        <input className='clue-text' id='clue-text' type="text" />
-        <div className="rangeDiv" id="rangeDiv">
-          <input onChange={() => { updateClueNum() }} className="clue-range" id='clueRange' type="range" autoComplete='off' min="0" max="10" defaultValue="0" />
-          <h3 className="range-number" id="rangeNumber">0</h3>
-        </div>
-        <Btn onClick={() => { giveClue() }} className="clue-submit" id="clue-submit" name="Give Clue" />
+      <div className={"blueSide"}>
+        <PlayerInfo numCards={cards.filter(c => c.team === 'blue' && !c.clicked).length} joinClass={joinClass} joinTeam={joinTeam} className={'blue'} />
+        <div id='clue-log' className='clue-log'></div>
+        <Btn onClick={() => changeTurn()} className={endClass} id="endTurn" name="End Turn" />
       </div>
 
-      {/* <button onClick={() => startGame()}> test start </button>
+
+    </div>
+
+    <div className={clueClass} id='clue-area'>
+      <input className='clue-text' id='clue-text' type="text" />
+      <div className="rangeDiv" id="rangeDiv">
+        <input onChange={() => { updateClueNum() }} className="clue-range" id='clueRange' type="range" autoComplete='off' min="0" max="10" defaultValue="0" />
+        <h3 className="range-number" id="rangeNumber">0</h3>
+      </div>
+      <Btn onClick={() => { giveClue() }} className="clue-submit" id="clue-submit" name="Give Clue" />
+    </div>
+
+    {/* <button onClick={() => startGame()}> test start </button>
       <button onClick={() => restart()}> test restart </button>
       <button onClick={() => giveClue()}> test give clue </button>
       <button onClick={() => changeTurn()}> test change Turn </button> */}
-    </div>
-  );
+  </div>
+);
 }
 
 export default App;

@@ -233,9 +233,6 @@ body.blue {
     margin: 0 auto 20px;
     height: 40px;
     width: 300px;
-    font-size: large;
-    text-align: center;
-
 }
 
 .name-area {
@@ -245,6 +242,5 @@ body.blue {
     padding-top: 55px;
     width: 400px;
     height: 200px;
-    background-color: #4799b7;
-    border: black solid 4px;
+    background-color: #4799b7
 }

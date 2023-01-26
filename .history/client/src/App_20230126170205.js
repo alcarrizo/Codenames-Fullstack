@@ -212,7 +212,6 @@ const App = () => {
       game.clueLog.forEach(line => {
         document.getElementById('clue-log').innerHTML += line + '<br>'
       });
-      setPlayer(newPlayer)
 
     })
 
@@ -291,9 +290,7 @@ const App = () => {
     var name = document.getElementById('name-text').value
     var newPlayer = { ...player, name: name }
 
-    socket.emit('connect-player', newPlayer)
     setPlayer(newPlayer)
-
   }
 
 
