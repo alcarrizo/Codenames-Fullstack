@@ -137,14 +137,9 @@ io.on('connection', socket => {
         if (Game.whoseTurn !== Game.cards[id].team
             || Game.cardsPicked === Game.pickLimit) {
             Game.whoseTurn = Game.whoseTurn === 'blue' ? 'red' : 'blue'
-            Game.clueGiven = false
         }
 
-        io.sockets.emit('card-revealed', {
-            cards: Game.cards,
-            turn: Game.whoseTurn,
-            clueGiven: Game.clueGiven
-        })
+        io.sockets.emit('card-revealed', { cards: Game.cards, turn: Game.whoseTurn })
     })
 
     // Handle Diconnect
@@ -193,13 +188,12 @@ io.on('connection', socket => {
 
     socket.on('change-turn', () => {
         Game.whoseTurn = Game.whoseTurn === 'blue' ? 'red' : 'blue'
-        Game.clueGiven = false
         io.sockets.emit('turn-change', Game)
     })
 
     // Timeout connection
     setTimeout(() => {
-        Game.players = Game.players.filter(p => p.id !== socket.id)
+        connections[playerIndex] = null
         socket.emit('timeout')
         socket.disconnect()
     }, 600000) // 10 minute limit per player

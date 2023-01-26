@@ -123,9 +123,9 @@ const App = () => {
     setCardsPicked(cardsPicked + 1)
 
     // The plus 1 on cardspicked is because it's behind by 1 number
-    // if (card.team !== turn || cardsPicked + 1 === pickLimit + 1) {
-    //   if (card.team !== 'black') changeTurn()
-    // }
+    if (card.team !== turn || cardsPicked + 1 === pickLimit + 1) {
+      if (card.team !== 'black') changeTurn()
+    }
 
     const revealedCard = { ...card, clicked: true }
     setCards(cards.map(c => c.id === id ? revealedCard : c))
@@ -329,7 +329,6 @@ const App = () => {
       setCards(result.cards)
       if (result.turn !== turn) {
         setTurn(result.turn)
-        setClueGiven(result.clueGiven)
       }
     })
 
@@ -340,10 +339,6 @@ const App = () => {
       setGameStart(game.gameStart)
       setTurn(game.whoseTurn)
       updateTeams(game.players)
-      game.clueLog.forEach(line => {
-        document.getElementById('clue-log').innerHTML += line + '<br>'
-      });
-
     })
 
     // update teams when a player joined a team
@@ -388,7 +383,6 @@ const App = () => {
 
     socket.on('turn-change', game => {
       setTurn(game.whoseTurn)
-      setClueGiven(game.clueGiven)
     })
 
   }, [])
@@ -464,7 +458,7 @@ const App = () => {
         <div className={"blueSide"}>
           <PlayerInfo numCards={cards.filter(c => c.team === 'blue' && !c.clicked).length} joinClass={joinClass} joinTeam={joinTeam} className={'blue'} />
           <div id='clue-log' className='clue-log'></div>
-          <Btn onClick={() => changeTurnTwo()} className={endClass} id="endTurn" name="End Turn" />
+          <Btn onClick={() => changeTurn()} className={endClass} id="endTurn" name="End Turn" />
         </div>
 
 

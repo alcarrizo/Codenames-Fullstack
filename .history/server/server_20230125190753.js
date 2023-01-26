@@ -140,11 +140,7 @@ io.on('connection', socket => {
             Game.clueGiven = false
         }
 
-        io.sockets.emit('card-revealed', {
-            cards: Game.cards,
-            turn: Game.whoseTurn,
-            clueGiven: Game.clueGiven
-        })
+        io.sockets.emit('card-revealed', { cards: Game.cards, turn: Game.whoseTurn, clueGive: Game.clueGiven })
     })
 
     // Handle Diconnect
@@ -199,7 +195,7 @@ io.on('connection', socket => {
 
     // Timeout connection
     setTimeout(() => {
-        Game.players = Game.players.filter(p => p.id !== socket.id)
+        connections[playerIndex] = null
         socket.emit('timeout')
         socket.disconnect()
     }, 600000) // 10 minute limit per player

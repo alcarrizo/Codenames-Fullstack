@@ -7,7 +7,7 @@ game object
 - black cards
 
 functions
-connect to game function 
+connect to game function
 - returns players and cards (before joining acts as a spectator)
 
 Join team function
@@ -22,6 +22,3 @@ Start game
 reveal card
 - update card to be revealed
 
-have server keep clue log and send it whenever player connects/ recieves clue
-
-check turn system

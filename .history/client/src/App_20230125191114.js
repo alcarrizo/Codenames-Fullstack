@@ -340,10 +340,6 @@ const App = () => {
       setGameStart(game.gameStart)
       setTurn(game.whoseTurn)
       updateTeams(game.players)
-      game.clueLog.forEach(line => {
-        document.getElementById('clue-log').innerHTML += line + '<br>'
-      });
-
     })
 
     // update teams when a player joined a team
@@ -464,7 +460,7 @@ const App = () => {
         <div className={"blueSide"}>
           <PlayerInfo numCards={cards.filter(c => c.team === 'blue' && !c.clicked).length} joinClass={joinClass} joinTeam={joinTeam} className={'blue'} />
           <div id='clue-log' className='clue-log'></div>
-          <Btn onClick={() => changeTurnTwo()} className={endClass} id="endTurn" name="End Turn" />
+          <Btn onClick={() => changeTurn()} className={endClass} id="endTurn" name="End Turn" />
         </div>
 
 

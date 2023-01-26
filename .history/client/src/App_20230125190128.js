@@ -328,8 +328,8 @@ const App = () => {
     socket.on('card-revealed', result => {
       setCards(result.cards)
       if (result.turn !== turn) {
+        console.log('test client')
         setTurn(result.turn)
-        setClueGiven(result.clueGiven)
       }
     })
 
@@ -340,10 +340,6 @@ const App = () => {
       setGameStart(game.gameStart)
       setTurn(game.whoseTurn)
       updateTeams(game.players)
-      game.clueLog.forEach(line => {
-        document.getElementById('clue-log').innerHTML += line + '<br>'
-      });
-
     })
 
     // update teams when a player joined a team
@@ -388,7 +384,6 @@ const App = () => {
 
     socket.on('turn-change', game => {
       setTurn(game.whoseTurn)
-      setClueGiven(game.clueGiven)
     })
 
   }, [])
@@ -464,7 +459,7 @@ const App = () => {
         <div className={"blueSide"}>
           <PlayerInfo numCards={cards.filter(c => c.team === 'blue' && !c.clicked).length} joinClass={joinClass} joinTeam={joinTeam} className={'blue'} />
           <div id='clue-log' className='clue-log'></div>
-          <Btn onClick={() => changeTurnTwo()} className={endClass} id="endTurn" name="End Turn" />
+          <Btn onClick={() => changeTurn()} className={endClass} id="endTurn" name="End Turn" />
         </div>
 
 
@@ -482,7 +477,7 @@ const App = () => {
       <button onClick={() => startGametwo()}> test start </button>
       <button onClick={() => restartTwo()}> test restart </button>
       <button onClick={() => giveClueTwo()}> test give clue </button>
-      <button onClick={() => changeTurnTwo()}> test change Turn </button>
+      {/* <button onClick={() => changeTurnTwo()}> test change Turn </button> */}
     </div>
   );
 }

@@ -22,6 +22,8 @@ app.get('/api', (req, res) => {
     })
 })
 
+const connections = [null, null]
+
 var words = "Africa, Agent, Air, Alien, Alps, Amazon, Ambulance, America, Angel, Antarctica, Apple, Arm, Atlantis, Australia, Aztec, Back, Ball, Band, Bank, Bar, Bark, Bat, Battery, Beach, Bear, Beat, Bed, Beijing, Bell, Belt, Berlin, Bermuda, Berry, Bill, Block, Board, Bolt, Bomb, Bond, Boom, Boot, Bottle, Bow, Box, Bridge, Brush, Buck, Buffalo, Bug, Bugle, Button, Calf, Canada, Cap, Capital, Car, Card, Carrot, Casino, Cast, Cat, Cell, Centaur, Center, Chair, Change, Charge, Check, Chest, Chick, China, Chocolate, Church, Circle, Cliff, Cloak, Club, Code, Cold, Comic, Compound, Concert, Conductor, Contract, Cook, Copper, Cotton, Court, Cover, Crane, Crash, Cricket, Cross, Crown, Cycle, Czech, Dance, Date, Day, Death, Deck, Degree, Diamond, Dice, Dinosaur, Disease, Doctor, Dog, Draft, Dragon, Dress, Drill, Drop, Duck, Dwarf, Eagle, Egypt, Embassy, Engine, England, Europe, Eye, Face, Fair, Fall, Fan, Fence, Field, Fighter, Figure, File, Film, Fire, Fish, Flute, Fly, Foot, Force, Forest, Fork, France, Game, Gas, Genius, Germany, Ghost, Giant, Glass, Glove, Gold, Grace, Grass, Greece, Green, Ground, Ham, Hand, Hawk, Head, Heart, Helicopter, Himalayas, Hole, Hollywood, Honey, Hood, Hook, Horn, Horse, Horseshoe, Hospital, Hotel, Ice, Ice cream, India, Iron, Ivory, Jack, Jam, Jet, Jupiter, Kangaroo, Ketchup, Key, Kid, King, Kiwi, Knife, Knight, Lab, Lap, Laser, Lawyer, Lead, Lemon, Leprechaun, Life, Light, Limousine, Line, Link, Lion, Litter, Loch ness, Lock, Log, London, Luck, Mail, Mammoth, Maple, Marble, March, Mass, Match, Mercury, Mexico, Microscope, Millionaire, Mine, Mint, Missile, Model, Mole, Moon, Moscow, Mount, Mouse, Mouth, Mug, Nail, Needle, Net, New york, Night, Ninja, Note, Novel, Nurse, Nut, Octopus, Oil, Olive, Olympus, Opera, Orange, Organ, Palm, Pan, Pants, Paper, Parachute, Park, Part, Pass, Paste, Penguin, Phoenix, Piano, Pie, Pilot, Pin, Pipe, Pirate, Pistol, Pit, Pitch, Plane, Plastic, Plate, Platypus, Play, Plot, Point, Poison, Pole, Police, Pool, Port, Post, Pound, Press, Princess, Pumpkin, Pupil, Pyramid, Queen, Rabbit, Racket, Ray, Revolution, Ring, Robin, Robot, Rock, Rome, Root, Rose, Roulette, Round, Row, Ruler, Satellite, Saturn, Scale, School, Scientist, Scorpion, Screen, Scuba diver, Seal, Server, Shadow, Shakespeare, Shark, Ship, Shoe, Shop, Shot, Sink, Skyscraper, Slip, Slug, Smuggler, Snow, Snowman, Sock, Soldier, Soul, Sound, Space, Spell, Spider, Spike, Spine, Spot, Spring, Spy, Square, Stadium, Staff, Star, State, Stick, Stock, Straw, Stream, Strike, String, Sub, Suit, Superhero, Swing, Switch, Table, Tablet, Tag, Tail, Tap, Teacher, Telescope, Temple, Theater, Thief, Thumb, Tick, Tie, Time, Tokyo, Tooth, Torch, Tower, Track, Train, Triangle, Trip, Trunk, Tube, Turkey, Undertaker, Unicorn, Vacuum, Van, Vet, Wake, Wall, War, Washer, Washington, Watch, Water, Wave, Web, Well, Whale, Whip, Wind, Witch, Worm, Yard".split(',')
 
 var Game = {
@@ -121,9 +123,31 @@ const startGame = () => {
 io.on('connection', socket => {
     socket.emit('connected', Game)
     console.log(`${socket.id} user just connected`)
+    // socket.on('disconnect', () => {
+    //     console.log('user has disconnected')
+    // })
+
+    let playerIndex = -1
+    for (const i in connections) {
+        if (connections[i] === null) {
+            playerIndex = i
+            break
+        }
+    }
+    // Tell the connecting client what player number they are
+    socket.emit('player-number', playerIndex)
+    console.log(`Player ${playerIndex} has connected`)
+
+    connections[playerIndex] = false
+
+    // Tell eveyone what player number just connected
+    socket.broadcast.emit('player-connection', playerIndex)
+
     // start game
     socket.on('start-game', () => {
         startGame()
+        console.log('test in progress')
+        console.log(Game)
         //socket.broadcast.emit('Game-start', Game)
         //socket.emit('game-start', Game)
         io.sockets.emit('game-start', Game)
@@ -136,15 +160,11 @@ io.on('connection', socket => {
         console.log(Game.cardsPicked, Game.pickLimit)
         if (Game.whoseTurn !== Game.cards[id].team
             || Game.cardsPicked === Game.pickLimit) {
+            console.log('test')
             Game.whoseTurn = Game.whoseTurn === 'blue' ? 'red' : 'blue'
-            Game.clueGiven = false
         }
 
-        io.sockets.emit('card-revealed', {
-            cards: Game.cards,
-            turn: Game.whoseTurn,
-            clueGiven: Game.clueGiven
-        })
+        io.sockets.emit('card-revealed', { cards: Game.cards, turn: Game.whoseTurn })
     })
 
     // Handle Diconnect
@@ -193,13 +213,12 @@ io.on('connection', socket => {
 
     socket.on('change-turn', () => {
         Game.whoseTurn = Game.whoseTurn === 'blue' ? 'red' : 'blue'
-        Game.clueGiven = false
         io.sockets.emit('turn-change', Game)
     })
 
     // Timeout connection
     setTimeout(() => {
-        Game.players = Game.players.filter(p => p.id !== socket.id)
+        connections[playerIndex] = null
         socket.emit('timeout')
         socket.disconnect()
     }, 600000) // 10 minute limit per player

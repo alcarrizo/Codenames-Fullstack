@@ -23,5 +23,3 @@ reveal card
 - update card to be revealed
 
 have server keep clue log and send it whenever player connects/ recieves clue
-
-check turn system

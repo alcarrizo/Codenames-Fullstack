@@ -89,7 +89,7 @@ const App = () => {
   //they have the turn, and a clue hasn't been given
   var clueClass = player.team === turn && player.role === 'spymaster' && !clueGiven ? 'clue-area' : 'clue-area hide'
   // revealing the end turn button if it's your turn and your role isn't spymaster
-  var endClass = gameStart === true && player.team === turn && player.role !== 'spymaster' ? 'menuBtn' : 'menuBtn hide'
+  var endClass = player.team === turn && player.role !== 'spymaster' ? 'menuBtn' : 'menuBtn hide'
 
   // reveals/hides the join team buttons depending on whether the player has joined or not
   var joinClass = player.joined ? 'join-button hide' : 'join-button'
@@ -123,9 +123,9 @@ const App = () => {
     setCardsPicked(cardsPicked + 1)
 
     // The plus 1 on cardspicked is because it's behind by 1 number
-    // if (card.team !== turn || cardsPicked + 1 === pickLimit + 1) {
-    //   if (card.team !== 'black') changeTurn()
-    // }
+    if (card.team !== turn || cardsPicked + 1 === pickLimit + 1) {
+      if (card.team !== 'black') changeTurn()
+    }
 
     const revealedCard = { ...card, clicked: true }
     setCards(cards.map(c => c.id === id ? revealedCard : c))
@@ -325,12 +325,8 @@ const App = () => {
     })
 
     // reveal a clicked card
-    socket.on('card-revealed', result => {
-      setCards(result.cards)
-      if (result.turn !== turn) {
-        setTurn(result.turn)
-        setClueGiven(result.clueGiven)
-      }
+    socket.on('card-revealed', card => {
+      setCards(card)
     })
 
     // when a player connects, they get the game
@@ -340,10 +336,6 @@ const App = () => {
       setGameStart(game.gameStart)
       setTurn(game.whoseTurn)
       updateTeams(game.players)
-      game.clueLog.forEach(line => {
-        document.getElementById('clue-log').innerHTML += line + '<br>'
-      });
-
     })
 
     // update teams when a player joined a team
@@ -374,28 +366,18 @@ const App = () => {
 
     socket.on('clue-given', log => {
       setClueGiven(true)
-      //setPickLimit(clue.limit)
-      document.getElementById('clue-log').innerHTML = ''
+      setPickLimit(clue.limit)
       console.log(turn)
       log.forEach(line => {
-        document.getElementById('clue-log').innerHTML += line + '<br>'
+        document.getElementById('clue-log').innerHTML = line + '<br>'
       });
-
       //      document.getElementById('clue-log').innerHTML += turn + ': ' + clue.word + ' ' + clue.num + '<br>'
 
 
     })
 
-    socket.on('turn-change', game => {
-      setTurn(game.whoseTurn)
-      setClueGiven(game.clueGiven)
-    })
-
   }, [])
 
-  const changeTurnTwo = () => {
-    socket.emit('change-turn')
-  }
 
   const giveClueTwo = () => {
     let clue = document.getElementById('clue-text').value
@@ -464,7 +446,7 @@ const App = () => {
         <div className={"blueSide"}>
           <PlayerInfo numCards={cards.filter(c => c.team === 'blue' && !c.clicked).length} joinClass={joinClass} joinTeam={joinTeam} className={'blue'} />
           <div id='clue-log' className='clue-log'></div>
-          <Btn onClick={() => changeTurnTwo()} className={endClass} id="endTurn" name="End Turn" />
+          <Btn onClick={() => changeTurn()} className={endClass} id="endTurn" name="End Turn" />
         </div>
 
 
@@ -476,13 +458,13 @@ const App = () => {
           <input onChange={() => { updateClueNum() }} className="clue-range" id='clueRange' type="range" autoComplete='off' min="0" max="10" defaultValue="0" />
           <h3 className="range-number" id="rangeNumber">0</h3>
         </div>
-        <Btn onClick={() => { giveClueTwo() }} className="clue-submit" id="clue-submit" name="Give Clue" />
+        <Btn onClick={() => { giveClue() }} className="clue-submit" id="clue-submit" name="Give Clue" />
       </div>
 
       <button onClick={() => startGametwo()}> test start </button>
       <button onClick={() => restartTwo()}> test restart </button>
       <button onClick={() => giveClueTwo()}> test give clue </button>
-      <button onClick={() => changeTurnTwo()}> test change Turn </button>
+
     </div>
   );
 }
