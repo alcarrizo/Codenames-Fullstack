@@ -152,6 +152,13 @@ const App = () => {
     })
   }
 
+  const resetPlayer = () => {
+    console.log(player)
+    setPlayer(player => {
+      return { ...player, team: null, role: null, joined: false }
+    })
+  }
+
   //checks if someone has won whenever a card is picked
   useEffect(() => {
 
@@ -228,9 +235,7 @@ const App = () => {
       setCards(game.cards)
       updateTeams(game.players)
       setGameStart(game.gameStart)
-      setPlayer(player => {
-        return { ...player, team: null, role: null, joined: false }
-      })
+      resetPlayer()
       //bringing back the start game button
       document.getElementById('startBtn').className = 'menuBtn'
 

@@ -152,6 +152,12 @@ const App = () => {
     })
   }
 
+  const resetPlayer = () => {
+    setPlayer(player => {
+      return { ...player, team: null, role: null, joined: false }
+    })
+  }
+
   //checks if someone has won whenever a card is picked
   useEffect(() => {
 

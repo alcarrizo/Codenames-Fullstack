@@ -2,9 +2,9 @@ import './App.css';
 import { useState, useEffect } from 'react';
 import { io } from "../node_modules/socket.io/client-dist/socket.io";
 // use this socket for development
-const socket = io.connect('http://localhost:8080')
+//const socket = io.connect('http://localhost:8080')
 //use this socket for production
-//const socket = io()
+const socket = io()
 const Card = ({ card, revealCard, player }) => {
 
   var className = 'card '
@@ -84,7 +84,7 @@ const App = () => {
     socket.emit('start-game')
   }
   const restart = () => {
-
+    setPlayer({ ...player, team: null, role: null, joined: false })
     socket.emit('restart-game')
   }
 
@@ -228,9 +228,6 @@ const App = () => {
       setCards(game.cards)
       updateTeams(game.players)
       setGameStart(game.gameStart)
-      setPlayer(player => {
-        return { ...player, team: null, role: null, joined: false }
-      })
       //bringing back the start game button
       document.getElementById('startBtn').className = 'menuBtn'
 
