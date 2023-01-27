@@ -2,21 +2,18 @@ const express = require('express')
 const path = require('path')
 const app = express()
 const http = require('http').Server(app)
-//use this io for production
-//const io = require('socket.io')(http)
-
-// use this io for development
 const io = require('socket.io')(http, {
     cors: {
         origin: "http://localhost:3000"
     }
 })
+
 const cors = require('cors')
 
 
 app.use(cors())
-//app.use(express.static(path.join(__dirname, "../client/public")))
-app.use(express.static('build'))
+app.use(express.static(path.join(__dirname, "../client/public")))
+//app.use(express.static('build'))
 
 
 app.get('/api', (req, res) => {

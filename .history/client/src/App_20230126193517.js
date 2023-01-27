@@ -2,7 +2,7 @@ import './App.css';
 import { useState, useEffect } from 'react';
 import { io } from "../node_modules/socket.io/client-dist/socket.io";
 // use this socket for development
-const socket = io.connect('http://localhost:8080')
+const socket = io.connect('https://localhost:8080')
 //use this socket for production
 //const socket = io()
 const Card = ({ card, revealCard, player }) => {
@@ -84,7 +84,6 @@ const App = () => {
     socket.emit('start-game')
   }
   const restart = () => {
-    setPlayer({ ...player, team: null, role: null, joined: false })
     socket.emit('restart-game')
   }
 
@@ -189,6 +188,7 @@ const App = () => {
   useEffect(() => {
     // gets the cards and starts the game
     socket.on('game-start', game => {
+      console.log(game)
       setCards(game.cards)
       setGameStart(true)
       setTurn(game.whoseTurn)
@@ -228,6 +228,8 @@ const App = () => {
       setCards(game.cards)
       updateTeams(game.players)
       setGameStart(game.gameStart)
+      setPlayer({ ...player, team: null, role: null, joined: false })
+      console.log({ ...player, team: null, role: null, joined: false })
       //bringing back the start game button
       document.getElementById('startBtn').className = 'menuBtn'
 
@@ -247,6 +249,7 @@ const App = () => {
       setClueGiven(true)
       //setPickLimit(clue.limit)
       document.getElementById('clue-log').innerHTML = ''
+      console.log(turn)
       log.forEach(line => {
         document.getElementById('clue-log').innerHTML += line + '<br>'
       });
@@ -354,6 +357,10 @@ const App = () => {
         <Btn onClick={() => { giveClue() }} className="clue-submit" id="clue-submit" name="Give Clue" />
       </div>
 
+      {/* <button onClick={() => startGame()}> test start </button>
+      <button onClick={() => restart()}> test restart </button>
+      <button onClick={() => giveClue()}> test give clue </button>
+      <button onClick={() => changeTurn()}> test change Turn </button> */}
     </div>
   );
 }

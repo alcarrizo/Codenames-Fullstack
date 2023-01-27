@@ -189,6 +189,7 @@ const App = () => {
   useEffect(() => {
     // gets the cards and starts the game
     socket.on('game-start', game => {
+      console.log(game)
       setCards(game.cards)
       setGameStart(true)
       setTurn(game.whoseTurn)

@@ -84,7 +84,6 @@ const App = () => {
     socket.emit('start-game')
   }
   const restart = () => {
-    setPlayer({ ...player, team: null, role: null, joined: false })
     socket.emit('restart-game')
   }
 
@@ -189,6 +188,7 @@ const App = () => {
   useEffect(() => {
     // gets the cards and starts the game
     socket.on('game-start', game => {
+      console.log(game)
       setCards(game.cards)
       setGameStart(true)
       setTurn(game.whoseTurn)
@@ -228,6 +228,9 @@ const App = () => {
       setCards(game.cards)
       updateTeams(game.players)
       setGameStart(game.gameStart)
+      console.log(player)
+      setPlayer({ ...player, team: null, role: null, joined: false })
+      console.log({ ...player, team: null, role: null, joined: false })
       //bringing back the start game button
       document.getElementById('startBtn').className = 'menuBtn'
 
@@ -247,6 +250,7 @@ const App = () => {
       setClueGiven(true)
       //setPickLimit(clue.limit)
       document.getElementById('clue-log').innerHTML = ''
+      console.log(turn)
       log.forEach(line => {
         document.getElementById('clue-log').innerHTML += line + '<br>'
       });
@@ -290,6 +294,7 @@ const App = () => {
   const connectToGame = () => {
     var name = document.getElementById('name-text').value
     var newPlayer = { ...player, name: name }
+
 
     socket.emit('connect-player', newPlayer)
     setPlayer(newPlayer)
@@ -354,6 +359,10 @@ const App = () => {
         <Btn onClick={() => { giveClue() }} className="clue-submit" id="clue-submit" name="Give Clue" />
       </div>
 
+      {/* <button onClick={() => startGame()}> test start </button>
+      <button onClick={() => restart()}> test restart </button>
+      <button onClick={() => giveClue()}> test give clue </button>
+      <button onClick={() => changeTurn()}> test change Turn </button> */}
     </div>
   );
 }

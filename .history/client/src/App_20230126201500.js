@@ -85,6 +85,7 @@ const App = () => {
   }
   const restart = () => {
     setPlayer({ ...player, team: null, role: null, joined: false })
+    console.log({ ...player, team: null, role: null, joined: false })
     socket.emit('restart-game')
   }
 
@@ -189,6 +190,7 @@ const App = () => {
   useEffect(() => {
     // gets the cards and starts the game
     socket.on('game-start', game => {
+      console.log(game)
       setCards(game.cards)
       setGameStart(true)
       setTurn(game.whoseTurn)
