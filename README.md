@@ -6,3 +6,5 @@ I originally made this without using a framework, however while I was researchin
 
 So I upgraded my original codenames repository to using the React framework due to the ease of component resuability.
 For the server I'm am using express along with socket.io
+
+![image](https://user-images.githubusercontent.com/60402127/215008108-95285783-b66b-4d6b-81ce-e72367fd6d5e.png)
