@@ -225,9 +225,8 @@ const App = () => {
 
     // update teams when a player joined a team
     socket.on('player-joined', result => {
-      console.log(result.players)
-      updateTeams(result.players)
-      setClueGiven(result.clueGiven)
+      updateTeams(game.players)
+      setClueGiven(game.clueGiven)
 
     })
 
