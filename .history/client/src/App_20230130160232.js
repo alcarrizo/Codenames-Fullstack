@@ -265,6 +265,7 @@ const App = () => {
     socket.on('turn-change', game => {
       setTurn(game.whoseTurn)
       setClueGiven(game.clueGiven)
+      setCardsPicked(0)
     })
 
   }, [])

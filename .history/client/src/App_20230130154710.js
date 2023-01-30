@@ -72,6 +72,10 @@ const App = () => {
 
   const [gameStart, setGameStart] = useState(false)
 
+  const [pickLimit, setPickLimit] = useState(0)
+
+  // keeps tracks of how many cards have been clicked in a turn
+  const [cardsPicked, setCardsPicked] = useState(0)
 
 
   // tells the server to start the game and
@@ -202,10 +206,7 @@ const App = () => {
       if (result.turn !== turn) {
         setTurn(result.turn)
         setClueGiven(result.clueGiven)
-        document.getElementById('clue-log').innerHTML = ''
-        result.log.forEach(line => {
-          document.getElementById('clue-log').innerHTML += line + '<br>'
-        });
+        setCardsPicked(0)
       }
     })
 
@@ -244,6 +245,8 @@ const App = () => {
 
       //resetting the clue variables
       setClueGiven(false)
+      setCardsPicked(0)
+      setPickLimit(0)
       // resetting the clue log
       document.getElementById('clue-log').innerHTML = ''
 
@@ -265,6 +268,7 @@ const App = () => {
     socket.on('turn-change', game => {
       setTurn(game.whoseTurn)
       setClueGiven(game.clueGiven)
+      setCardsPicked(0)
     })
 
   }, [])

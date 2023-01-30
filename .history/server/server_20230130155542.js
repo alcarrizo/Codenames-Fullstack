@@ -171,8 +171,7 @@ io.on('connection', socket => {
         io.sockets.emit('card-revealed', {
             cards: Game.cards,
             turn: Game.whoseTurn,
-            clueGiven: Game.clueGiven,
-            log: Game.clueLog
+            clueGiven: Game.clueGiven
         })
     })
 

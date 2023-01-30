@@ -3,13 +3,13 @@ const path = require('path')
 const app = express()
 const http = require('http').Server(app)
 //use this io for production
-//const io = require('socket.io')(http)
+const io = require('socket.io')(http)
 
 // use this io for development
-const io = require('socket.io')(http, {
-    cors: {
-        origin: "http://localhost:3000"
-    }
+// const io = require('socket.io')(http, {
+//     cors: {
+//         origin: "http://localhost:3000"
+//     }
 })
 const cors = require('cors')
 
@@ -159,7 +159,6 @@ io.on('connection', socket => {
 
             Game.cards[id].clicked = true
             Game.cardsPicked += 1
-            Game.clueLog.push(`${Game.cards[id].word} selected`)
 
             if (Game.whoseTurn !== Game.cards[id].team
                 || Game.cardsPicked === Game.pickLimit) {
@@ -171,8 +170,7 @@ io.on('connection', socket => {
         io.sockets.emit('card-revealed', {
             cards: Game.cards,
             turn: Game.whoseTurn,
-            clueGiven: Game.clueGiven,
-            log: Game.clueLog
+            clueGiven: Game.clueGiven
         })
     })
 
@@ -228,12 +226,12 @@ io.on('connection', socket => {
         io.sockets.emit('turn-change', Game)
     })
 
-    // // Timeout connection
-    // setTimeout(() => {
-    //     Game.players = Game.players.filter(p => p.id !== socket.id)
-    //     socket.emit('timeout')
-    //     socket.disconnect()
-    // }, 600000) // 10 minute limit per player
+    // Timeout connection
+    setTimeout(() => {
+        Game.players = Game.players.filter(p => p.id !== socket.id)
+        socket.emit('timeout')
+        socket.disconnect()
+    }, 600000) // 10 minute limit per player
 })
 
 

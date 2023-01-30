@@ -2,9 +2,9 @@ import './App.css';
 import { useState, useEffect } from 'react';
 import { io } from "../node_modules/socket.io/client-dist/socket.io";
 // use this socket for development
-const socket = io.connect('http://localhost:8080')
+//const socket = io.connect('http://localhost:8080')
 //use this socket for production
-//const socket = io()
+const socket = io()
 const Card = ({ card, revealCard, player }) => {
 
   var className = 'card '
@@ -72,6 +72,10 @@ const App = () => {
 
   const [gameStart, setGameStart] = useState(false)
 
+  const [pickLimit, setPickLimit] = useState(0)
+
+  // keeps tracks of how many cards have been clicked in a turn
+  const [cardsPicked, setCardsPicked] = useState(0)
 
 
   // tells the server to start the game and
@@ -189,11 +193,6 @@ const App = () => {
       setCards(game.cards)
       setGameStart(true)
       setTurn(game.whoseTurn)
-
-      //resetting the winScreen and clue log
-      document.getElementById('win-screen').className = 'win-screen hide'
-      document.getElementById('clue-log').innerHTML = ''
-
     })
 
     // reveal a clicked card
@@ -202,10 +201,7 @@ const App = () => {
       if (result.turn !== turn) {
         setTurn(result.turn)
         setClueGiven(result.clueGiven)
-        document.getElementById('clue-log').innerHTML = ''
-        result.log.forEach(line => {
-          document.getElementById('clue-log').innerHTML += line + '<br>'
-        });
+        setCardsPicked(0)
       }
     })
 
@@ -244,6 +240,8 @@ const App = () => {
 
       //resetting the clue variables
       setClueGiven(false)
+      setCardsPicked(0)
+      setPickLimit(0)
       // resetting the clue log
       document.getElementById('clue-log').innerHTML = ''
 
@@ -265,6 +263,7 @@ const App = () => {
     socket.on('turn-change', game => {
       setTurn(game.whoseTurn)
       setClueGiven(game.clueGiven)
+      setCardsPicked(0)
     })
 
   }, [])

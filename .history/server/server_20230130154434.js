@@ -159,7 +159,6 @@ io.on('connection', socket => {
 
             Game.cards[id].clicked = true
             Game.cardsPicked += 1
-            Game.clueLog.push(`${Game.cards[id].word} selected`)
 
             if (Game.whoseTurn !== Game.cards[id].team
                 || Game.cardsPicked === Game.pickLimit) {
@@ -171,8 +170,7 @@ io.on('connection', socket => {
         io.sockets.emit('card-revealed', {
             cards: Game.cards,
             turn: Game.whoseTurn,
-            clueGiven: Game.clueGiven,
-            log: Game.clueLog
+            clueGiven: Game.clueGiven
         })
     })
 

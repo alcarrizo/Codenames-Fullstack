@@ -95,7 +95,7 @@ body.blue {
 .card.beige.picked {
     transition: opacity 1s;
     opacity: 50%;
-    border: yellow solid 5px;
+    border: yellow solid 3px;
 }
 
 
@@ -116,8 +116,8 @@ body.blue {
     height: 50%;
     margin-top: 10px;
     padding-left: 10%;
+
     box-sizing: border-box;
-    border: black solid 3px;
 }
 
 .redTeam {
