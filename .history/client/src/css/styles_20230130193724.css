@@ -79,19 +79,20 @@ body.blue {
 
 }
 
-.card.beige {
-    background-color: #b9b979;
-}
 
 .card.blue,
 .card.red,
 .card.black,
 .card.beige {
-    text-shadow: -1px 1px 0 black, 1px 1px 0 black, 1px -1px 0 black, -1px -1px 0 black;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     color: white;
     transition: background-color 1s;
 }
 
+.card.beige {
+    background-color: #b9b979;
+    color: black;
+}
 
 .card.blue.picked,
 .card.red.picked,

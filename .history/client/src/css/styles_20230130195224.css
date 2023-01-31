@@ -87,7 +87,7 @@ body.blue {
 .card.red,
 .card.black,
 .card.beige {
-    text-shadow: -1px 1px 0 black, 1px 1px 0 black, 1px -1px 0 black, -1px -1px 0 black;
+    text-shadow: -1px 1.5px black, 1.5px 1px black, 1px 1.5px black, 1.5px 10px black;
     color: white;
     transition: background-color 1s;
 }
