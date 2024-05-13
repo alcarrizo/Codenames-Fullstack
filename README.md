@@ -7,6 +7,6 @@ I originally made this without using a framework, however while I was researchin
 So I upgraded my original codenames repository to using the React framework due to the ease of component resuability.
 For the server I'm am using express along with socket.io
 
-<img src="https://cdn.discordapp.com/attachments/1068384109254164552/1068384286186680390/image.png"  width="600" height="300">
+<img src="https://i.imgur.com/Z6jQ3IT.png"  width="600" height="300">
 
 it is hosted on fly.io at https://codenames.fly.dev/
